@@ -1,0 +1,40 @@
+# Use the latest Python image as the base
+FROM container-registry.oracle.com/os/oraclelinux:8
+
+RUN dnf install -y unzip vim wget curl python3.12 java-17-openjdk python3.12-requests python3.12-pip oracle-instantclient-basic oracle-instantclient-sqlplus oracle-instantclient-release-el8 oracle-release-el8 oraclelinux-developer-release-el8 
+
+#RUN wget https://download.oracle.com/otn_software/linux/instantclient/2350000/oracle-instantclient-basic-23.5.0.24.07-1.el8.x86_64.rpm
+#RUN yum -y install oracle-instantclient-basic-23.5.0.24.07-1.el8.x86_64.rpm
+#RUN wget https://download.oracle.com/otn_software/linux/instantclient/2350000/oracle-instantclient-sqlplus-23.5.0.24.07-1.el8.x86_64.rpm
+#RUN yum -y install oracle-instantclient-sqlplus-23.5.0.24.07-1.el8.x86_64.rpm
+
+
+WORKDIR /app
+
+ENV VIRTUAL_ENV=/app/venv
+RUN python3 -m venv $VIRTUAL_ENV
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+
+RUN /app/venv/bin/pip install --upgrade pip
+
+# Copy requirements.txt and install dependencies in the virtual environment
+COPY ./demoapp/requirements.txt .
+
+RUN /app/venv/bin/pip install --no-cache-dir -r requirements.txt
+
+# Copy the application files
+COPY ./demoapp/. .
+
+# Expose the port
+EXPOSE 5000
+
+# Specify the command to run the app
+#CMD ["/app/venv/bin/python", "/app/venv/app.py"]
+# CMD ["/bin/bash"]
+
+#build
+#sudo docker build -t your_image_name -f dockerfiledemo .
+
+
+#run
+#sudo docker run -d -p 5000:5000 --name demotest demoapp:2

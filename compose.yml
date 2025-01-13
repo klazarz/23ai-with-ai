@@ -1,0 +1,60 @@
+services:
+  database:
+    container_name: 23ai
+    image: container-registry.oracle.com/database/free:latest
+    environment:
+      - ORACLE_PWD=Welcome23ai
+      - ENABLE_ARCHIVELOG=true
+      - ENABLE_FORCE_LOGGING=true
+    ports:
+      - "1521:1521"
+    volumes:
+      - "/home/kevin/docker/oradata/:/opt/oracle/oradata"
+  ords:
+    container_name: ords
+    # build:
+    #   context: .
+    #   dockerfile: dockerfileords
+    image: container-registry.oracle.com/database/ords-developer:latest
+    ports:
+      - "8181:8181"
+      - "27017:27017"
+    volumes:
+      - "/home/kevin/docker/ords_secrets/:/opt/oracle/variables"
+      - "/home/kevin/docker/ords_config/:/etc/ords/config/"
+    depends_on:
+      database:
+        condition: service_healthy
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    stdin_open: true
+    tty: true
+  sql:
+    build:
+      context: .
+      dockerfile: dockerfilesql
+    container_name: sql
+    depends_on:
+      database:
+        condition: service_healthy
+    stdin_open: true
+    tty: true
+    entrypoint: [ "/scripts/check_ords.sh" ]
+  demo:
+    build:
+      context: .
+      dockerfile: dockerfiledemo
+    container_name: demo
+    volumes:
+      - "/home/kevin/docker/demoapp:/local"
+    ports:
+      - "5000:5000"
+    depends_on:
+      database:
+        condition: service_healthy
+    stdin_open: true
+    tty: true
+    entrypoint: [ "/app/check_ora23ai.sh" ]

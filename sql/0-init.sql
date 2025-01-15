@@ -61,7 +61,18 @@ create or replace directory demo_py_dir as '/tmp';
 
 grant read,write on directory demo_py_dir to ora23ai;
 
-
+begin
+   dbms_vector.drop_onnx_model(
+      model_name => 'all_MiniLM_L12_v2',
+      force      => true
+   );
+   dbms_vector.load_onnx_model(
+      directory  => 'DEMO_PY_DIR',
+      file_name  => 'all_MiniLM_L12_v2.onnx',
+      model_name => 'all_MiniLM_L12_v2'
+   );
+end;
+/
 
 
 exit;

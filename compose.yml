@@ -9,7 +9,7 @@ services:
     ports:
       - "1521:1521"
     volumes:
-            - "/home/opc/23ai-with-ai/oradata/:/opt/oracle/oradata"
+      - "/home/opc/23ai-with-ai/oradata/:/opt/oracle/oradata"
   ords:
     container_name: ords
     # build:
@@ -20,9 +20,9 @@ services:
       - "8181:8181"
       - "27017:27017"
     volumes:
-            - "/home/opc/23ai-with-ai/ords_secrets:/opt/oracle/variables"
-            - "/home/opc/23ai-with-ai/ords_config/:/etc/ords/config/"
-            - "/home/opc/23ai-with-ai/sql:/sql"
+      - "/home/opc/23ai-with-ai/ords_secrets:/opt/oracle/variables"
+      - "/home/opc/23ai-with-ai/ords_config/:/etc/ords/config/"
+      - "/home/opc/23ai-with-ai/sql:/sql"
     depends_on:
       database:
         condition: service_healthy
@@ -39,7 +39,7 @@ services:
       dockerfile: dockerfiledemo
     container_name: demo
     volumes:
-            - "/home/opc/23ai-with-ai/demoapp:/local"
+      - "/home/opc/23ai-with-ai/demoapp:/local"
     ports:
       - "5000:5000"
     depends_on:

@@ -9,7 +9,7 @@ services:
     ports:
       - "1521:1521"
     volumes:
-      - "/home/kevin/docker/oradata/:/opt/oracle/oradata"
+            - "/home/opc/23ai-with-ai/oradata/:/opt/oracle/oradata"
   ords:
     container_name: ords
     # build:
@@ -20,8 +20,9 @@ services:
       - "8181:8181"
       - "27017:27017"
     volumes:
-      - "/home/kevin/docker/ords_secrets/:/opt/oracle/variables"
-      - "/home/kevin/docker/ords_config/:/etc/ords/config/"
+            - "/home/opc/23ai-with-ai/ords_secrets:/opt/oracle/variables"
+            - "/home/opc/23ai-with-ai/ords_config/:/etc/ords/config/"
+            - "/home/opc/23ai-with-ai/sql:/sql"
     depends_on:
       database:
         condition: service_healthy
@@ -32,6 +33,21 @@ services:
       - "11434:11434"
     stdin_open: true
     tty: true
+  demo:
+    build:
+      context: .
+      dockerfile: dockerfiledemo
+    container_name: demo
+    volumes:
+            - "/home/opc/23ai-with-ai/demoapp:/local"
+    ports:
+      - "5000:5000"
+    depends_on:
+      database:
+        condition: service_healthy
+    stdin_open: true
+    tty: true
+    entrypoint: [ "/app/check_ora23ai.sh" ]
   sql:
     build:
       context: .
@@ -43,18 +59,3 @@ services:
     stdin_open: true
     tty: true
     entrypoint: [ "/scripts/check_ords.sh" ]
-  demo:
-    build:
-      context: .
-      dockerfile: dockerfiledemo
-    container_name: demo
-    volumes:
-      - "/home/kevin/docker/demoapp:/local"
-    ports:
-      - "5000:5000"
-    depends_on:
-      database:
-        condition: service_healthy
-    stdin_open: true
-    tty: true
-    entrypoint: [ "/app/check_ora23ai.sh" ]

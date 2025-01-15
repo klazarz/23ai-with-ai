@@ -147,7 +147,5 @@ rm -f v23.3.zip
 
 rm -f moviestreamload.zip
 
-docker cp ./model/ALL-MINILM-L12-V2.onnx 23ai:/tmp/.
-
 
 exec tail -f /dev/null

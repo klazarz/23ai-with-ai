@@ -1,27 +1,19 @@
-create or replace mle module fetch_module 
-        language javascript as
-
-        import "mle-js-fetch";
-    
-        export async function fetch_data(url) {
-    
-        const response = await fetch(url);
-        const data = await response.json();
-    
-        const jsonData = Array.isArray(data) ? { data: data } : data;
-
-        return jsonData;
-    };
-
-/
+create or replace mle module fetch_module language javascript as import "mle-js-fetch";
+   export async
+   function fetch_data (url)
+         {const response = await fetch (url);
+         const data = await response.json ();
+         const jsondata = array.isarray (data) ?{data : data}: data;
+            return
+            jsondata;
+         };
+   /
 
 
-create or replace function get_data(
-    p_url varchar2
-) 
-return json
-as mle module fetch_module
-signature 'fetch_data(string)';
+create or replace
+function get_data (
+   p_url varchar2
+) return json as mle module fetch_module signature 'fetch_data(string)';
 /
 
 
@@ -40,14 +32,11 @@ create json collection table countries;
 
 
 -- load json
-insert into countries ( data )
+insert into countries (data)
    select get_data('https://restcountries.com/v3.1/all');
 
 
-select *
-  from countries;
-
-
+select * from countries;
 
 drop table if exists country_list;
 
@@ -63,8 +52,7 @@ insert into country_list (
    cca3,
    name
 )
-   select jt.*
-     from countries co,
+   select jt.*from countries co,
           json_table ( co.data.data[*]
              columns (
                 "CC3" varchar2 ( 3 ) path '$.cca3',

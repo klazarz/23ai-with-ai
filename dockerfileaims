@@ -28,7 +28,7 @@ ENV PATH=/opt/venv/bin:$PATH
 COPY ./app/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-COPY --chown=$RUNUSER:$RUNUSER src/ /app/
+COPY --chown=$RUNUSER:$RUNUSER ./app/src/ /app/
 # Copy the OCI directory if it exists
 ENV ENVIRONMENT=${ENVIRONMENT}
 RUN if [ -d "/app/.oci" ] && [ "$ENVIRONMENT" != "development" ]; then \

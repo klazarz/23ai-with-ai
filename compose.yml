@@ -59,3 +59,12 @@ services:
     stdin_open: true
     tty: true
     entrypoint: [ "/scripts/check_ords.sh" ]
+  aims:
+    build:
+      context: .
+      dockerfile: dockerfileaims
+    container_name: aims
+    ports:
+      - "8501:8501"
+    stdin_open: true
+    tty: true

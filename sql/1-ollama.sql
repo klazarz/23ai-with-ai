@@ -1,7 +1,4 @@
 
-
-#docker exec -it ollama /bin/bash
-
 begin
     -- Allow all hosts for HTTP/HTTP_PROXY
     dbms_network_acl_admin.append_host_ace(
@@ -26,24 +23,25 @@ begin
 jo := json_object_t();
 jo.put('access_token', 'dummy');
 dbms_vector_chain.create_credential(
-credential_name => 'OPENAI_CRED',
+credential_name => 'LLM_CRED',
 params => json(jo.to_string));
 end;
 /
 
 
 
-SELECT
-dbms_vector.utl_to_embedding(
-'cat',
-json('{
-"provider": "openai",
-"url": "http://193.123.58.17:11434/v1/embeddings",
-"model": "llama3.2",
-"credential_name" : "OPENAI_CRED"
-}')
-)
-FROM dual;
+-- SELECT
+-- dbms_vector.utl_to_embedding(
+-- 'cat',
+-- json('{
+--   "provider"       : "ollama", 
+--   "host"           : "local", 
+--   "url"            : "http://ollama:11434/api/embeddings", 
+--   "model"          : "llama3.2"
+-- }')
+-- )
+-- FROM dual;
+
 
 
 exit;

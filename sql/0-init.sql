@@ -36,7 +36,7 @@ grant execute on utl_http to ora23ai;
 
 begin
    dbms_network_acl_admin.append_host_ace(
-      host => 'restcountries.com',
+      host => '*',
       ace  => xs$ace_type(
          privilege_list => xs$name_list('http'),
          principal_name => 'ora23ai',
@@ -61,6 +61,8 @@ create or replace directory demo_py_dir as '/tmp';
 
 grant read,write on directory demo_py_dir to ora23ai;
 
+
+--load model - make sure you have downloaded the model using the load_model_2_db script on ./model
 begin
    dbms_vector.drop_onnx_model(
       model_name => 'all_MiniLM_L12_v2',
@@ -69,10 +71,9 @@ begin
    dbms_vector.load_onnx_model(
       directory  => 'DEMO_PY_DIR',
       file_name  => 'all_MiniLM_L12_v2.onnx',
-      model_name => 'all_MiniLM_L12_v2'
+      model_name => 'demo_model'
    );
 end;
-/
 
 
 exit;

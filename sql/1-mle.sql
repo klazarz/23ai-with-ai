@@ -1,28 +1,19 @@
-create or replace mle module fetch_module
-        language javascript as
+create or replace mle module fetch_module language javascript as
+      import "mle-js-fetch";
+   export async
+   function fetch_data ( url )
+         {const response = await fetch ( url );
+         const data = await response.json ( );
+         const jsondata = array.isarray ( data ) ?{data : data}: data;
+            return
+            jsondata;
+         };
 
-        import "mle-js-fetch";
 
-        export async function fetch_data(url) {
-
-        const response = await fetch(url);
-        const data = await response.json();
-
-        const jsonData = Array.isArray(data) ? { data: data } : data;
-
-        return jsonData;
-    };
-
+create or replace function get_data (
+   p_url varchar2
+) return json as mle module fetch_module signature 'fetch_data(string)';
 /
-
-create or replace function get_data(
-    p_url varchar2
-)
-return json
-as mle module fetch_module
-signature 'fetch_data(string)';
-/
-
 
 
 
@@ -36,9 +27,7 @@ drop table if exists countries;
 
 create json collection table countries;
 
-
-
--- load json
+-- load json (might fail - api is not reliant - load via Mongo compass)
 insert into countries (data)
    select get_data('https://restcountries.com/v3.1/all');
 
@@ -60,7 +49,7 @@ insert into country_list (
    name
 )
    select jt.* from countries co,
-          json_table ( co.data.data[*]
+          json_table ( co.data[*]
              columns (
                 "CC3" varchar2 ( 3 ) path '$.cca3',
                 "NAME" varchar2 ( 30 ) path '$.name.common'
@@ -95,7 +84,7 @@ insert into borders (
           jt.border,
           'neighbour'
      from countries co,
-          json_table ( co.data.data[*]
+          json_table ( co.data[*]
              columns (
                 "CCA3" varchar2 ( 3 ) path '$.cca3',
                 "BORDERS" clob format json path '$.borders',

@@ -135,6 +135,8 @@ cd /scripts/tmp/ && sql movie/Welcome23ai@23ai:1521/freepdb1 @movie_table_data.s
 
 cd /scripts/ && sql sys/Welcome23ai@23ai/freepdb1 as sysdba @0-init.sql
 
+cd /scripts/ && sql sys/Welcome23ai@23ai/freepdb1 as sysdba @1-ollama.sql
+
 cd /scripts/ && sql ora23ai/ora23ai@23ai/freepdb1 @1-mle.sql
 
 cd /scripts/ && sql ora23ai/ora23ai@23ai/freepdb1 @2-generic.sql
@@ -146,6 +148,5 @@ rm -rf /scripts/tmp
 rm -f v23.3.zip
 
 rm -f moviestreamload.zip
-
 
 exec tail -f /dev/null

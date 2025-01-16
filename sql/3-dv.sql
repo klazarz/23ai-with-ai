@@ -36,3 +36,6 @@ insert into new_orders (
            3232,
            systimestamp,
            23 );
+
+
+exit;

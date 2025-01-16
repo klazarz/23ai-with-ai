@@ -321,7 +321,7 @@ SELECT first_name, COUNT(*)
 
 
 
-
+exit;
 
 
 

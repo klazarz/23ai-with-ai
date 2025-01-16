@@ -38,9 +38,12 @@ dbms_vector.utl_to_embedding(
 'cat',
 json('{
 "provider": "openai",
-"url": "http://192.168.1.60:11434/v1/embeddings",
+"url": "http://193.123.58.17:11434/v1/embeddings",
 "model": "llama3.2",
 "credential_name" : "OPENAI_CRED"
 }')
 )
 FROM dual;
+
+
+exit;

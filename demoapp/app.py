@@ -301,6 +301,21 @@ def get_vector_search():
     # Pass the formatted query result to the template
     return render_template("vector.html", data=data, query_result=query)
 
+@app.route("/vector_ollama", methods=["GET", "POST"])
+def get_vector_search_ollama():
+    word = "cat"  # Default word if no input is provided
+    if request.method == "POST":
+        word = request.form.get("word", "cat")  # Get the word from the form input
+
+    # Replace 'cat' in the query with the user-provided word
+    query = f"""SELECT DBMS_VECTOR_CHAIN.UTL_TO_EMBEDDING('{word}', JSON('{{"provider":"ollama", "host": "local","url": "http://ollama:11434/api/embeddings", "model":"llama3.2"}}') )"""
+    cursor.execute(query)
+    title = [i[0] for i in cursor.description]
+    data = cursor.fetchall()
+
+    # Pass the formatted query result to the template
+    return render_template("vector_ollama.html", data=data, query_result=query)
+
 
 @app.route("/simsearch", methods=["GET", "POST"])
 def get_simsearch():
@@ -328,6 +343,35 @@ def get_simsearch():
         session.modified = True  # Mark the session as modified
 
     return render_template("simsearch.html", results=session["results"])
+
+@app.route("/simsearch_ollama", methods=["GET", "POST"])
+def get_simsearch_ollama():
+    # Check if "results" is already in the session, initialize it if not
+    if "results" not in session:
+        session["results"] = []  # Initialize results as an empty list
+
+    if request.method == "POST":
+        # Retrieve input words
+        word1 = request.form.get("word1", "cat")
+        word2 = request.form.get("word2", "dog")
+
+        # Construct and execute query
+        query = f"""SELECT VECTOR_DISTANCE(
+                            DBMS_VECTOR_CHAIN.UTL_TO_EMBEDDING('{word1}', JSON('{{"provider":"ollama", "host": "local","url": "http://ollama:11434/api/embeddings",  "model":"llama3.2"}}')), 
+                            DBMS_VECTOR_CHAIN.UTL_TO_EMBEDDING('{word2}', JSON('{{"provider":"ollama", "host": "local","url": "http://ollama:11434/api/embeddings",  "model":"llama3.2"}}')),
+                            COSINE )"""
+        cursor.execute(query)
+        data = cursor.fetchall()
+        distance = data[0][0] if data else "N/A"  # Assuming single result for distance
+
+        # Append new result to session
+        result_data = {"word1": word1, "word2": word2, "distance": distance}
+        session["results"].append(result_data)
+        session.modified = True  # Mark the session as modified
+
+    return render_template("simsearch_ollama.html", results=session["results"])
+
+
 
 
 if __name__ == "__main__":

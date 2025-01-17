@@ -1,12 +1,12 @@
 # Use the latest Python image as the base
 FROM container-registry.oracle.com/os/oraclelinux:8
 
-RUN dnf install -y unzip vim wget curl python3.12 java-17-openjdk python3.12-requests python3.12-pip oracle-instantclient-release-el8 oracle-release-el8 oraclelinux-developer-release-el8
+RUN dnf install -y unzip vim wget curl python3.12 java-17-openjdk python3.12-requests python3.12-pip oracle-release-el8 oraclelinux-developer-release-el8
 
-RUN wget https://download.oracle.com/otn_software/linux/instantclient/2350000/oracle-instantclient-basic-23.5.0.24.07-1.el8.x86_64.rpm
-RUN yum -y install oracle-instantclient-basic-23.5.0.24.07-1.el8.x86_64.rpm
-RUN wget https://download.oracle.com/otn_software/linux/instantclient/2350000/oracle-instantclient-sqlplus-23.5.0.24.07-1.el8.x86_64.rpm
-RUN yum -y install oracle-instantclient-sqlplus-23.5.0.24.07-1.el8.x86_64.rpm
+# RUN wget https://download.oracle.com/otn_software/linux/instantclient/2350000/oracle-instantclient-basic-23.5.0.24.07-1.el8.x86_64.rpm
+# RUN yum -y install oracle-instantclient-basic-23.5.0.24.07-1.el8.x86_64.rpm
+# RUN wget https://download.oracle.com/otn_software/linux/instantclient/2350000/oracle-instantclient-sqlplus-23.5.0.24.07-1.el8.x86_64.rpm
+# RUN yum -y install oracle-instantclient-sqlplus-23.5.0.24.07-1.el8.x86_64.rpm
 
 
 WORKDIR /app

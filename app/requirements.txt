@@ -33,6 +33,6 @@ umap-learn==0.5.7
 
 ## For Licensing Purposes; ensures no GPU modules are installed
 ## as part of langchain-huggingface
--f https://download.pytorch.org/whl/cpu/torch
-torch==2.5.1+cpu ; sys_platform == "linux"
-torch==2.5.1 ; sys_platform == "darwin"
+#-f https://download.pytorch.org/whl/cpu/torch
+#torch==2.5.1+cpu ; sys_platform == "linux"
+#torch==2.5.1 ; sys_platform == "darwin"

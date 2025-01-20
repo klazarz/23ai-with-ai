@@ -4,7 +4,7 @@
 {% block content %}
 
 <div>
-    <p>We will use <b>VECTOR_DISTANCE</b> compute the cosine distance between the vectors</p>
+    <p>We will use <b>VECTOR_DISTANCE</b> compute the cosine distance between the vectors (using llama3.2)</p>
     <code>
         select VECTOR_DISTANCE(
         DBMS_VECTOR_CHAIN.UTL_TO_EMBEDDING('{word1}', JSON('{'provider':'ollama', 'host': 'local','url': 'http://ollama:11434/api/embeddings', 'model':'llama3.2'}')),
@@ -12,7 +12,7 @@
         COSINE )
     </code>
     <code>{{ query_result }}</code><br>
-    <form method="POST" action="/simsearch">
+    <form method="POST" action="/simsearch_ollama">
         <div class="mb-3">
             <label for="word1">Enter a word 1:</label>
             <input type="text" class="form-control" id="word1" name="word1" required>

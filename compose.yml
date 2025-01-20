@@ -4,8 +4,8 @@ services:
     image: container-registry.oracle.com/database/free:latest
     environment:
       - ORACLE_PWD=Welcome23ai
-      - ENABLE_ARCHIVELOG=true
-      - ENABLE_FORCE_LOGGING=true
+      - ENABLE_ARCHIVELOG=false
+      - ENABLE_FORCE_LOGGING=false
     ports:
       - "1521:1521"
     volumes:
@@ -22,32 +22,36 @@ services:
     volumes:
       - "./ords_secrets:/opt/oracle/variables"
       - "./ords_config/:/etc/ords/config/"
-      - "./23ai-with-ai/sql:/sql"
     depends_on:
       database:
         condition: service_healthy
   ollama:
-    image: ollama/ollama
     container_name: ollama
+    #pull_policy: always
+    build:
+      context: .
+      dockerfile: dockerfileollama
+    volumes:
+      - "./model:/root/.ollama"
     ports:
       - "11434:11434"
-    stdin_open: true
-    tty: true
+    restart: always
   demo:
     build:
       context: .
       dockerfile: dockerfiledemo
+    pull_policy: always
     container_name: demo
     volumes:
       - "./demoapp:/local"
     ports:
-      - "5000:5000"
+      - "8182:8182"
     depends_on:
       database:
         condition: service_healthy
     stdin_open: true
     tty: true
-    #entrypoint: [ "/app/check_ora23ai.sh" ]
+    entrypoint: [ "/app/check_ora23ai.sh" ]
   sql:
     build:
       context: .

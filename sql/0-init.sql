@@ -74,6 +74,6 @@ begin
       model_name => 'demo_model'
    );
 end;
-
+/
 
 exit;

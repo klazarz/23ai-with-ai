@@ -5,3 +5,7 @@ oradata/
 oradata/.FREE.created
 oradata/.DS_Store
 demoapp/.DS_Store
+model/models
+model/id_ed25519
+model/id_ed25519.pub
+oradata/.FREE.created

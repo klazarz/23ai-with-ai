@@ -9,3 +9,5 @@ model/models
 model/id_ed25519
 model/id_ed25519.pub
 oradata/.FREE.created
+.DS_Store
+demoapp/.DS_Store

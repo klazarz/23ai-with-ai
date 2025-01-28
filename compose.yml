@@ -4,12 +4,12 @@ services:
     image: container-registry.oracle.com/database/free:latest
     environment:
       - ORACLE_PWD=Welcome23ai
-      - ENABLE_ARCHIVELOG=false
-      - ENABLE_FORCE_LOGGING=false
+      # - ENABLE_ARCHIVELOG=false
+      # - ENABLE_FORCE_LOGGING=false
     ports:
       - "1521:1521"
-    volumes:
-      - "./oradata/:/opt/oracle/oradata"
+    # volumes:
+    #   - "./oradata/:/opt/oracle/oradata"
     ords:
       container_name: ords
       # build:

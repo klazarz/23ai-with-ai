@@ -308,7 +308,7 @@ def get_vector_search_ollama():
         word = request.form.get("word", "cat")  # Get the word from the form input
 
     # Replace 'cat' in the query with the user-provided word
-    query = f"""SELECT DBMS_VECTOR_CHAIN.UTL_TO_EMBEDDING('{word}', JSON('{{"provider":"ollama", "host": "local","url": "http://ollama:11434/api/embeddings", "model":"llama3.2"}}') )"""
+    query = f"""SELECT DBMS_VECTOR_CHAIN.UTL_TO_EMBEDDING('{word}', JSON('{{"provider":"ollama", "host": "local","url": "http://ollama:11434/api/embeddings", "model":"deepseek-r1"}}') )"""
     cursor.execute(query)
     title = [i[0] for i in cursor.description]
     data = cursor.fetchall()
@@ -357,8 +357,8 @@ def get_simsearch_ollama():
 
         # Construct and execute query
         query = f"""SELECT VECTOR_DISTANCE(
-                            DBMS_VECTOR_CHAIN.UTL_TO_EMBEDDING('{word1}', JSON('{{"provider":"ollama", "host": "local","url": "http://ollama:11434/api/embeddings",  "model":"llama3.2"}}')), 
-                            DBMS_VECTOR_CHAIN.UTL_TO_EMBEDDING('{word2}', JSON('{{"provider":"ollama", "host": "local","url": "http://ollama:11434/api/embeddings",  "model":"llama3.2"}}')),
+                            DBMS_VECTOR_CHAIN.UTL_TO_EMBEDDING('{word1}', JSON('{{"provider":"ollama", "host": "local","url": "http://ollama:11434/api/embeddings",  "model":"deepseek-r1"}}')), 
+                            DBMS_VECTOR_CHAIN.UTL_TO_EMBEDDING('{word2}', JSON('{{"provider":"ollama", "host": "local","url": "http://ollama:11434/api/embeddings",  "model":"deepseek-r1"}}')),
                             COSINE )"""
         cursor.execute(query)
         data = cursor.fetchall()

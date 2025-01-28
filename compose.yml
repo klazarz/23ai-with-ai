@@ -10,6 +10,7 @@ services:
       - "1521:1521"
     # volumes:
     #   - "./oradata/:/opt/oracle/oradata"
+
   ords:
     container_name: ords
     # build:
@@ -57,9 +58,9 @@ services:
       context: .
       dockerfile: dockerfilesql
     container_name: sql
-    depends_on:
-      ords:
-        condition: service_healthy
+    # depends_on:
+    #   ords:
+    #     condition: service_healthy
     stdin_open: true
     tty: true
     entrypoint: [ "/scripts/check_ords.sh" ]

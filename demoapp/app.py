@@ -371,7 +371,33 @@ def get_simsearch_ollama():
 
     return render_template("simsearch_ollama.html", results=session["results"])
 
+OLLAMA_URL = "http://ollama:11434/api/generate"
 
+@app.route("/ask_llm", methods=["GET", "POST"])
+def ask_llm():
+    response_text = ""
+    if request.method == "POST":
+        question = request.form.get("question")
+        model = request.form.get("model")
+        
+        if question and model:
+            payload = {"model": model, "prompt": question}
+            response = requests.post(OLLAMA_URL, json=payload, stream=True)
+
+            if response.status_code == 200:
+                response_text = ""
+                for line in response.iter_lines():
+                    if line:
+                        try:
+                            json_data = json.loads(line.decode("utf-8"))  # Corrected JSON parsing
+                            response_text += json_data.get("response", "")
+                        except json.JSONDecodeError as e:
+                            response_text = f"Error processing response: {e}"
+                            break
+            else:
+                response_text = f"Error: {response.status_code} - {response.text}"
+    
+    return render_template("ask_llm.html", response_text=response_text, models=["llama3.2", "deepseek-r1:1.5b"])
 
 
 if __name__ == "__main__":

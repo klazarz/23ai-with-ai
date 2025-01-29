@@ -10,6 +10,7 @@ services:
       - "1521:1521"
     volumes:
       - "./oradata/:/opt/oracle/oradata"
+      - "./sql/startup/:/opt/oracle/scripts/startup"
 
   ords:
     container_name: ords

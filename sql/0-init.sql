@@ -1,22 +1,22 @@
 --run as sys
 
 
-drop user if exists ora23ai cascade;
+-- drop user if exists ora23ai cascade;
 
-create user ora23ai identified by ora23ai;
+-- create user ora23ai identified by ora23ai;
 
-alter user ora23ai
-   default tablespace users
-   quota unlimited on users;
+-- alter user ora23ai
+--    default tablespace users
+--    quota unlimited on users;
 
-alter user ora23ai
-   temporary tablespace temp;
+-- alter user ora23ai
+--    temporary tablespace temp;
 
-grant connect,resource,db_developer_role,
-   create mle
-to ora23ai;
+-- grant connect,resource,db_developer_role,
+--    create mle
+-- to ora23ai;
 
-grant execute on javascript to ora23ai;
+-- grant execute on javascript to ora23ai;
 
 begin
    ords_admin.enable_schema(

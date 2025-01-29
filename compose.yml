@@ -47,7 +47,7 @@ services:
     volumes:
       - "./demoapp:/local"
     ports:
-      - "5000:5000"
+      - "8182:8182"
     depends_on:
       database:
         condition: service_healthy

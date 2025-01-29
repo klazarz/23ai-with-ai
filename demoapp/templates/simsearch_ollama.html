@@ -7,8 +7,8 @@
     <p>We will use <b>VECTOR_DISTANCE</b> compute the cosine distance between the vectors (using deepseek-r1)</p>
     <code>
         select VECTOR_DISTANCE(
-        DBMS_VECTOR_CHAIN.UTL_TO_EMBEDDING('{word1}', JSON('{'provider':'ollama', 'host': 'local','url': 'http://ollama:11434/api/embeddings', 'model':'deepseek-r1'}')),
-        DBMS_VECTOR_CHAIN.UTL_TO_EMBEDDING('{word2}', JSON('{'provider':'ollama', 'host': 'local','url': 'http://ollama:11434/api/embeddings', 'model':'deepseek-r1'}')),
+        DBMS_VECTOR_CHAIN.UTL_TO_EMBEDDING('{word1}', JSON('{'provider':'ollama', 'host': 'local','url': 'http://ollama:11434/api/embeddings', 'model':'deepseek-r1:1.5b'}')),
+        DBMS_VECTOR_CHAIN.UTL_TO_EMBEDDING('{word2}', JSON('{'provider':'ollama', 'host': 'local','url': 'http://ollama:11434/api/embeddings', 'model':'deepseek-r1:1.5b'}')),
         COSINE )
     </code>
     <code>{{ query_result }}</code><br>

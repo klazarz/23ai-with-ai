@@ -377,4 +377,4 @@ def get_simsearch_ollama():
 if __name__ == "__main__":
     app.debug = True
     app.config["SECRET_KEY"] = "super secret key"
-    app.run(host='0.0.0.0', port=8182)
+    app.run(host='0.0.0.0', port=5000)

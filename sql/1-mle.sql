@@ -8,9 +8,11 @@ create or replace mle module fetch_module language javascript as
             return
             jsondata;
          };
+   create
+   or
+   replace
 
-
-create or replace function get_data (
+function get_data (
    p_url varchar2
 ) return json as mle module fetch_module signature 'fetch_data(string)';
 /
@@ -28,11 +30,12 @@ drop table if exists countries;
 create json collection table countries;
 
 -- load json (might fail - api is not reliant - load via Mongo compass)
-insert into countries (data)
+insert into countries ( data )
    select get_data('https://restcountries.com/v3.1/all');
 
 
-select * from countries;
+select *
+  from countries;
 
 drop table if exists country_list;
 
@@ -48,7 +51,8 @@ insert into country_list (
    cca3,
    name
 )
-   select jt.* from countries co,
+   select jt.*
+     from countries co,
           json_table ( co.data[*]
              columns (
                 "CC3" varchar2 ( 3 ) path '$.cca3',
@@ -116,25 +120,6 @@ update borders b
  where c.cca3 = b.border;
 
 commit;
-
-
-begin
-   dbms_vector.drop_onnx_model(
-      model_name => 'demo_model',
-      force      => true
-   );
-   dbms_vector.load_onnx_model(
-      directory  => 'DEMO_PY_DIR',
-      file_name  => 'ALL-MINILM-L12-V2.onnx',
-      model_name => 'demo_model'
-   );
-end;
-/
-
-
-
-
-
 
 
 

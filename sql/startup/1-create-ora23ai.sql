@@ -1,9 +1,7 @@
 --run as sys
 conn system/Welcome23ai@freepdb1
 
-drop user if exists ora23ai cascade;
-
-create user ora23ai identified by ora23ai;
+create user if not exists ora23ai identified by ora23ai;
 
 alter user ora23ai
    default tablespace users

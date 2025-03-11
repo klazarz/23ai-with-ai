@@ -77,7 +77,7 @@ services:
   simidemo:
     build:
       context: .
-      dockerfile: dockerfiledemo
+      dockerfile: dockerfiledemosimi
     pull_policy: always
     container_name: simidemo
     volumes:

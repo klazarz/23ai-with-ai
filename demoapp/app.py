@@ -139,9 +139,7 @@ def update_mongo(new):
 
 
 def get_rest():
-    response = requests.get(
-        "http://ords:8181/ords/ora23ai/customers_dv/100001"
-    )
+    response = requests.get("http://ords:8181/ords/ora23ai/customers_dv/100001")
     rest_data = json.dumps(response.json(), default=str, indent=4, sort_keys=False)
     return rest_data
 
@@ -301,6 +299,7 @@ def get_vector_search():
     # Pass the formatted query result to the template
     return render_template("vector.html", data=data, query_result=query)
 
+
 @app.route("/vector_ollama", methods=["GET", "POST"])
 def get_vector_search_ollama():
     word = "cat"  # Default word if no input is provided
@@ -344,6 +343,7 @@ def get_simsearch():
 
     return render_template("simsearch.html", results=session["results"])
 
+
 @app.route("/simsearch_ollama", methods=["GET", "POST"])
 def get_simsearch_ollama():
     # Check if "results" is already in the session, initialize it if not
@@ -371,7 +371,9 @@ def get_simsearch_ollama():
 
     return render_template("simsearch_ollama.html", results=session["results"])
 
+
 OLLAMA_URL = "http://ollama:11434/api/generate"
+
 
 @app.route("/ask_llm", methods=["GET", "POST"])
 def ask_llm():
@@ -379,7 +381,7 @@ def ask_llm():
     if request.method == "POST":
         question = request.form.get("question")
         model = request.form.get("model")
-        
+
         if question and model:
             payload = {"model": model, "prompt": question}
             response = requests.post(OLLAMA_URL, json=payload, stream=True)
@@ -389,18 +391,24 @@ def ask_llm():
                 for line in response.iter_lines():
                     if line:
                         try:
-                            json_data = json.loads(line.decode("utf-8"))  # Corrected JSON parsing
+                            json_data = json.loads(
+                                line.decode("utf-8")
+                            )  # Corrected JSON parsing
                             response_text += json_data.get("response", "")
                         except json.JSONDecodeError as e:
                             response_text = f"Error processing response: {e}"
                             break
             else:
                 response_text = f"Error: {response.status_code} - {response.text}"
-    
-    return render_template("ask_llm.html", response_text=response_text, models=["llama3.2", "deepseek-r1:1.5b"])
+
+    return render_template(
+        "ask_llm.html",
+        response_text=response_text,
+        models=["llama3.2", "deepseek-r1:1.5b"],
+    )
 
 
 if __name__ == "__main__":
     app.debug = True
     app.config["SECRET_KEY"] = "super secret key"
-    app.run(host='0.0.0.0', port=8182)
+    app.run(host="0.0.0.0", port=8182)

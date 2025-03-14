@@ -18,6 +18,8 @@ services:
     #   context: .
     #   dockerfile: dockerfileords
     image: container-registry.oracle.com/database/ords-developer:latest
+    environment:
+      - IGNORE_APEX=TRUE
     ports:
       - "8181:8181"
       - "27017:27017"
